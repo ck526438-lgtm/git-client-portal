@@ -1,0 +1,48 @@
+branding:
+  studio: "Atelier Vantage"
+  tagline: "Portail de suivi de votre projet"
+  accent: "#4f46e5"
+
+project:
+  title: "Refonte de la boutique en ligne"
+  client: "Maison Lumen"
+  contact: "Claire Beaumont"
+  reference: "AV-2026-014"
+  summary: >-
+    Migration de la boutique vers une plateforme sur-mesure : nouveau design,
+    tunnel d'achat en trois clics et fiches produit enrichies.
+  started_on: 2026-09-08
+  target_on: 2026-12-18
+
+status: active
+
+contact:
+  email: "hello@atelier-vantage.example"
+
+team:
+  - name: "Nour Adja"
+    role: "Direction de projet"
+    email: "nour@atelier-vantage.example"
+  - name: "Lena Kova"
+    role: "Direction artistique"
+  - name: "Thibault Rey"
+    role: "Développement"
+
+links:
+  - label: "Écrire à l'équipe"
+    url: "mailto:hello@atelier-vantage.example"
+    kind: "email"
+  - label: "Pré-production (maquette cliquable)"
+    url: "https://example.com/preprod"
+    kind: "web"
+
+support:
+  hours: "Du lundi au vendredi, 9h - 18h (CET)"
+  note: "Une question ? Réponse sous 24 h ouvrées."
+
+billing:
+  legal: "SAS Atelier Vantage, capital 20 000 € · RCS Paris 900 123 456"
+  vat: "TVA intracom. FR40 900123456"
+  iban: "FR76 3000 4009 8900 0000 0000 189"
+  terms: "Règlement à 30 jours par virement, encaissement à réception."
+  penalty: "Retard : pénalité égale à trois fois le taux d'intérêt légal."

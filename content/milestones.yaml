@@ -1,0 +1,37 @@
+milestones:
+  - id: cadrage
+    title: "Cadrage et audit"
+    summary: "Inventaire du catalogue, ateliers utilisateurs et plan de reprise SEO."
+    status: done
+    start: 2026-09-08
+    due: 2026-09-26
+
+  - id: design
+    title: "Design du tunnel d'achat"
+    summary: "Maquettes accueil, fiche produit et panier, deux allers-retours inclus."
+    status: active
+    progress: 75
+    start: 2026-09-29
+    due: 2026-10-24
+
+  - id: integration
+    title: "Intégration front-end"
+    summary: "Développement des pages validées, responsive et accessibles (RGAA niveau 1)."
+    status: active
+    progress: 30
+    start: 2026-10-13
+    due: 2026-11-20
+
+  - id: contenu
+    title: "Reprise des contenus"
+    summary: "Import de 480 fiches produit, réécriture des catégories."
+    status: planned
+    start: 2026-11-03
+    due: 2026-11-27
+
+  - id: lancement
+    title: "Recette et mise en ligne"
+    summary: "Tests de paiement, bascule DNS, suivi des 7 premiers jours."
+    status: planned
+    start: 2026-12-01
+    due: 2026-12-18
