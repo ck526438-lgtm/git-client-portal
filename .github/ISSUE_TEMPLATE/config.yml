@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question sur mon déploiement
+    url: https://github.com/ck526438-lgtm/git-client-portal/discussions
+    about: Décrivez votre hébergeur, votre variable d'environnement manquante et le message obtenu.

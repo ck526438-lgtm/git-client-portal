@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 560" width="1180" height="560" role="img" aria-label="Du fichier Markdown au portail client">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8f9fc"/>
+      <stop offset="1" stop-color="#eef0f8"/>
+    </linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#1e2233" flood-opacity="0.10"/>
+    </filter>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#7b8194"/>
+    </marker>
+  </defs>
+
+  <style>
+    text { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    .t { font-size: 17px; font-weight: 700; fill: #14161f; }
+    .s { font-size: 13.5px; fill: #5a6072; }
+    .m { font-size: 12.5px; fill: #4f46e5; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .cap { font-size: 12px; font-weight: 700; fill: #8b90a1; letter-spacing: 1.4px; }
+    .flow { stroke: #7b8194; stroke-width: 2; fill: none; marker-end: url(#ar); }
+  </style>
+
+  <rect width="1180" height="560" rx="18" fill="url(#bg)"/>
+
+  <text x="46" y="52" class="t" font-size="21">Le contenu est le produit</text>
+  <text x="46" y="76" class="s">Un dépôt Git, une commande de build, un site statique. Rien d'autre à héberger.</text>
+
+  <!-- Colonne 1 : l'atelier -->
+  <text x="46" y="118" class="cap">01 · VOTRE ÉDITEUR</text>
+  <g filter="url(#sh)">
+    <rect x="46" y="132" width="300" height="286" rx="14" fill="#ffffff" stroke="#e2e5ee"/>
+  </g>
+  <rect x="46" y="132" width="300" height="38" rx="14" fill="#14161f"/>
+  <rect x="46" y="152" width="300" height="18" fill="#14161f"/>
+  <circle cx="68" cy="151" r="4.5" fill="#ff5f57"/>
+  <circle cx="84" cy="151" r="4.5" fill="#febc2e"/>
+  <circle cx="100" cy="151" r="4.5" fill="#28c840"/>
+  <text x="200" y="156" class="s" fill="#c6cad6">content/</text>
+
+  <text x="70" y="200" class="m">project.yaml</text>
+  <text x="70" y="222" class="s">marque, client, équipe, facturation</text>
+  <line x1="70" y1="240" x2="322" y2="240" stroke="#eceef5"/>
+  <text x="70" y="266" class="m">milestones.yaml</text>
+  <text x="70" y="288" class="s">étapes, %, échéances</text>
+  <line x1="70" y1="306" x2="322" y2="306" stroke="#eceef5"/>
+  <text x="70" y="332" class="m">updates/ · deliverables/</text>
+  <text x="70" y="354" class="m">invoices/ · docs/</text>
+  <text x="70" y="376" class="s">Markdown + bloc de métadatas</text>
+
+  <path class="flow" d="M346 275 H424"/>
+  <text x="352" y="262" class="s" font-size="12">git push</text>
+
+  <!-- Colonne 2 : le build -->
+  <text x="424" y="118" class="cap">02 · LA COMMANDE DE BUILD</text>
+  <g filter="url(#sh)">
+    <rect x="424" y="132" width="300" height="286" rx="14" fill="#ffffff" stroke="#e2e5ee"/>
+  </g>
+  <text x="448" y="168" class="t">npm run build</text>
+  <line x1="448" y1="186" x2="698" y2="186" stroke="#eceef5"/>
+
+  <circle cx="459" cy="216" r="9" fill="#eef0ff"/>
+  <text x="459" y="221" class="s" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">1</text>
+  <text x="480" y="221" class="s">lit tout le dossier <tspan class="m">content/</tspan></text>
+
+  <circle cx="459" cy="256" r="9" fill="#eef0ff"/>
+  <text x="459" y="261" class="s" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">2</text>
+  <text x="480" y="261" class="s">valide champs, dates, statuts</text>
+
+  <circle cx="459" cy="296" r="9" fill="#eef0ff"/>
+  <text x="459" y="301" class="s" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">3</text>
+  <text x="480" y="301" class="s">calcule totaux et retards</text>
+
+  <circle cx="459" cy="336" r="9" fill="#eef0ff"/>
+  <text x="459" y="341" class="s" text-anchor="middle" font-size="11" font-weight="700" fill="#4f46e5">4</text>
+  <text x="480" y="341" class="s">écrit <tspan class="m">generated/content.json</tspan></text>
+
+  <rect x="448" y="362" width="252" height="40" rx="9" fill="#fff5f5" stroke="#f3d3d3"/>
+  <text x="462" y="380" class="s" fill="#a8322f">Une erreur = build rouge.</text>
+  <text x="462" y="396" class="s" fill="#a8322f">Le portail ne se publie jamais à moitié.</text>
+
+  <path class="flow" d="M724 275 H802"/>
+  <text x="738" y="262" class="s" font-size="12">30 à 60 s</text>
+
+  <!-- Colonne 3 : le client -->
+  <text x="802" y="118" class="cap">03 · LE CLIENT</text>
+  <g filter="url(#sh)">
+    <rect x="802" y="132" width="332" height="286" rx="14" fill="#ffffff" stroke="#e2e5ee"/>
+  </g>
+  <rect x="824" y="154" width="288" height="150" rx="10" fill="#14161f"/>
+  <rect x="838" y="168" width="118" height="9" rx="4.5" fill="#4f46e5"/>
+  <rect x="838" y="186" width="182" height="14" rx="6" fill="#e9ebf3"/>
+  <rect x="838" y="212" width="70" height="30" rx="7" fill="#22263a"/>
+  <rect x="916" y="212" width="70" height="30" rx="7" fill="#22263a"/>
+  <rect x="994" y="212" width="70" height="30" rx="7" fill="#22263a"/>
+  <rect x="838" y="256" width="246" height="8" rx="4" fill="#3a3f57"/>
+  <rect x="838" y="256" width="150" height="8" rx="4" fill="#4f46e5"/>
+  <text x="824" y="330" class="t">Portail protégé</text>
+  <text x="824" y="352" class="s">Un mot de passe, un cookie signé HMAC.</text>
+  <text x="824" y="374" class="s">HTML prérendu servi par le CDN.</text>
+  <text x="824" y="396" class="s">Aucun compte, aucune base, aucun tracker.</text>
+
+  <!-- Bande du bas -->
+  <g filter="url(#sh)">
+    <rect x="46" y="446" width="1088" height="72" rx="14" fill="#ffffff" stroke="#e2e5ee"/>
+  </g>
+  <text x="72" y="474" class="t">Ce qui n'existe pas ici</text>
+  <text x="72" y="494" class="s">Pas de serveur applicatif à maintenir,</text>
+  <text x="72" y="512" class="s">pas de migration de schéma, pas de sauvegarde.</text>
+
+  <line x1="430" y1="464" x2="430" y2="500" stroke="#eceef5"/>
+  <text x="456" y="474" class="t">Et à la place</text>
+  <text x="456" y="494" class="s">L'historique Git du projet fait office</text>
+  <text x="456" y="512" class="s">de base de données — relisible dans dix ans.</text>
+
+  <line x1="836" y1="464" x2="836" y2="500" stroke="#eceef5"/>
+  <rect x="880" y="462" width="220" height="40" rx="20" fill="#4f46e5"/>
+  <text x="990" y="488" class="s" text-anchor="middle" fill="#ffffff" font-weight="700">1 dépôt = 1 client</text>
+</svg>

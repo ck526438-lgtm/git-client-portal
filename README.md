@@ -5,15 +5,47 @@ Markdown et un `project.yaml` dans un dépôt Git : votre client voit l'avanceme
 factures dans une interface propre, protégée par un mot de passe. Pas de compte à créer, pas de base de
 données, pas d'abonnement.
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16">
+  <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript strict">
+  <img src="https://img.shields.io/badge/base%20de%20donn%C3%A9es-0-16a34a?style=flat-square" alt="Zéro base de données">
+  <img src="https://img.shields.io/badge/d%C3%A9pendances-5-E8912D?style=flat-square" alt="Cinq dépendances runtime">
+  <img src="https://img.shields.io/badge/licence-MIT-6b7280?style=flat-square" alt="Licence MIT">
+</p>
+
+<p align="center">
+  <a href="https://vercel.com/new/clone?repository-url=https://github.com/ck526438-lgtm/git-client-portal">
+    <img src="https://vercel.com/button" alt="Déployer sur Vercel" height="34">
+  </a>
+  &nbsp;
+  <a href="https://app.netlify.com/start/deploy?repository=https://github.com/ck526438-lgtm/git-client-portal">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Déployer sur Netlify" height="34">
+  </a>
+</p>
+
+<p align="center">
+  <img src="docs/assets/visite.gif" alt="Visite des cinq écrans du portail">
+</p>
+
 > **English.** A minimalist client portal for freelancers and small agencies: everything lives in a Git
 > repository as Markdown and YAML. Push a commit, the client-facing dashboard updates on the next deploy.
 > Password protected, no database, deploys to Vercel or Netlify in one click.
+
+## Comment ça marche
+
+![Du fichier Markdown au portail client](docs/assets/schema-portail.svg)
+
+## Les écrans
 
 ![Tableau de bord du portail](docs/screenshots/dashboard.png)
 
 | Vue mobile | Facture imprimable | Thème sombre |
 | --- | --- | --- |
-| ![Portail sur mobile](docs/screenshots/mobile.png) | ![Facture détaillée](docs/screenshots/facture.png) | ![Mode sombre](docs/screenshots/sombre.png) |
+| <img src="docs/screenshots/mobile.png" width="200" alt="Portail sur mobile"> | <img src="docs/screenshots/facture.png" width="470" alt="Facture détaillée"> | <img src="docs/screenshots/sombre.png" width="470" alt="Mode sombre"> |
+
+| Journal d'activité | Livrables en attente d'avis | Mode d'emploi du projet |
+| --- | --- | --- |
+| <img src="docs/screenshots/activite.png" width="470" alt="Le journal du projet"> | <img src="docs/screenshots/livrables.png" width="470" alt="Les livrables"> | <img src="docs/screenshots/documents.png" width="470" alt="Les documents"> |
 
 ## Pourquoi ce projet existe
 
@@ -160,6 +192,8 @@ Les noms de fichiers deviennent les URL : `content/updates/design-system-v2.md` 
 
 ### Format d'une facture
 
+![Liste des factures avec le total encaissé et le reste à régler](docs/screenshots/factures.png)
+
 Les totaux sont calculés, jamais saisis à la main : `total HT`, `TVA`, `total TTC` découlent des lignes,
 et une facture `unpaid` dont `due_on` est passée bascule automatiquement en « En retard ».
 
@@ -209,6 +243,8 @@ Le support de Netlify repose sur sa détection Next.js native, qui installe le r
 configuration supplémentaire.
 
 ## Modèle de sécurité
+
+![Écran d'accès : le contenu n'est jamais transmis avant le mot de passe](docs/screenshots/login.png)
 
 - **Un mot de passe, partagé hors ligne.** La validation se fait côté serveur ; le mot de passe n'est
   jamais envoyé au navigateur.
