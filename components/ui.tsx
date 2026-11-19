@@ -32,15 +32,17 @@ export function Panel({
   title,
   note,
   action,
+  id,
   children,
 }: {
+  id?: string
   title: string
   note?: string
   action?: ReactNode
   children: ReactNode
 }) {
   return (
-    <section className="card card-pad">
+    <section className="card card-pad" id={id}>
       <div className="panel-title">
         <h2>{title}</h2>
         {note ? <span className="panel-note">{note}</span> : null}

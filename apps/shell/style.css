@@ -1,0 +1,153 @@
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/outfit.woff2') format('woff2');
+}
+
+:root {
+  --bg: #e8e6f0;
+  --surface: rgba(255, 255, 255, 0.72);
+  --solid: #ffffff;
+  --line: rgba(31, 27, 77, 0.1);
+  --glass: rgba(255, 255, 255, 0.8);
+  --ink: #17162b;
+  --ink-2: #4c4b66;
+  --ink-3: #7d7c96;
+  --accent: #1f1b4d;
+  --sky-1: #7f97d6;
+  --sky-2: #b9b6e6;
+  --sky-3: #f2d6cb;
+  --bad: #a52a2a;
+  --bad-bg: #fdeaea;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0d1a;
+    --surface: rgba(28, 30, 52, 0.66);
+    --solid: #181a2e;
+    --line: rgba(255, 255, 255, 0.09);
+    --glass: rgba(255, 255, 255, 0.09);
+    --ink: #eeedfb;
+    --ink-2: #b6b5cf;
+    --ink-3: #8584a3;
+    --accent: #8f88ff;
+    --sky-1: #1b2350;
+    --sky-2: #3a2f6e;
+    --sky-3: #7a4a6a;
+    --bad: #f38080;
+    --bad-bg: #2a1517;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; }
+
+body {
+  background:
+    radial-gradient(700px 500px at 10% -10%, color-mix(in srgb, var(--sky-2) 70%, transparent), transparent 70%),
+    radial-gradient(700px 500px at 100% 0%, color-mix(in srgb, var(--sky-1) 55%, transparent), transparent 70%),
+    radial-gradient(800px 500px at 60% 110%, color-mix(in srgb, var(--sky-3) 60%, transparent), transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Outfit', ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.wrap { max-width: 520px; margin: 0 auto; padding: 40px 20px; }
+
+.brand { display: flex; gap: 14px; align-items: center; margin-bottom: 26px; }
+.brand h1 { margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
+.brand img { border-radius: 14px; box-shadow: 0 10px 24px -12px rgba(31, 27, 77, 0.6); }
+.brand p { margin: 2px 0 0; color: var(--ink-2); font-size: 14.5px; }
+
+.card {
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  backdrop-filter: blur(22px) saturate(165%);
+  border: 1px solid var(--glass);
+  border-radius: 28px;
+  box-shadow: 0 18px 40px -22px rgba(31, 27, 77, 0.35);
+  padding: 22px;
+  margin-bottom: 16px;
+}
+
+.card h2 { margin: 0 0 8px; font-size: 16px; }
+.hint { margin: 0 0 14px; color: var(--ink-2); font-size: 14.5px; }
+
+label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+
+input {
+  width: 100%;
+  font: inherit;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--solid);
+  color: var(--ink);
+}
+
+input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+button { font: inherit; cursor: pointer; }
+
+#valider {
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--solid);
+  font-weight: 600;
+}
+
+#valider:disabled { opacity: 0.6; cursor: wait; }
+
+.error {
+  margin: 10px 0 0;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: var(--bad-bg);
+  color: var(--bad);
+  font-size: 14px;
+}
+
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { display: flex; align-items: center; gap: 8px; }
+.list li + li { border-top: 1px solid var(--line); }
+
+.row {
+  flex: 1;
+  border-radius: 16px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 4px;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.row:hover .row-name { color: var(--accent); }
+.row-name { font-weight: 600; }
+.row-sub { font-size: 13px; color: var(--ink-3); overflow-wrap: anywhere; }
+
+.remove {
+  border: 1px solid var(--line);
+  background: var(--solid);
+  color: var(--ink-2);
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+.foot { color: var(--ink-3); font-size: 13px; text-align: center; margin-top: 18px; }

@@ -19,6 +19,7 @@ export interface ProjectInfo {
   studio: string
   tagline: string
   accent: string
+  cover: string
   title: string
   client: string
   contact: string

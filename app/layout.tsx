@@ -1,10 +1,19 @@
 import type { Metadata, Viewport } from 'next'
+import { AppRuntime } from '@/components/app-install'
+import '@fontsource-variable/outfit'
 import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Portail client',
   description: "Suivi de projet, livrables et factures.",
   robots: { index: false, follow: false },
+  applicationName: 'Portail client',
+  appleWebApp: { capable: true, title: 'Portail', statusBarStyle: 'default' },
+  icons: {
+    icon: [{ url: '/icons/192', type: 'image/png', sizes: '192x192' }],
+    apple: [{ url: '/icons/180', sizes: '180x180' }],
+  },
+  formatDetection: { telephone: false },
 }
 
 export const viewport: Viewport = {
@@ -29,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Aller au contenu
         </a>
         {children}
+        <AppRuntime />
       </body>
     </html>
   )

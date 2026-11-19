@@ -1,0 +1,89 @@
+{
+  "name": "portail-client-desktop",
+  "productName": "Portail Client",
+  "version": "1.1.0",
+  "description": "Application de bureau du Portail client (Windows, macOS, Linux).",
+  "author": {
+    "name": "Portail client",
+    "email": "noreply@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/ck526438-lgtm/git-client-portal",
+  "license": "MIT",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "prepare-shell": "node scripts/prepare.mjs",
+    "start": "npm run prepare-shell && electron .",
+    "dist": "npm run prepare-shell && electron-builder --publish never",
+    "dist:win": "npm run prepare-shell && electron-builder --win --publish never",
+    "dist:mac": "npm run prepare-shell && electron-builder --mac --publish never",
+    "dist:linux": "npm run prepare-shell && electron-builder --linux --publish never"
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.portailclient.app",
+    "productName": "Portail Client",
+    "copyright": "MIT",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "shell/**",
+      "build/icon.png"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Portail-Client-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Portail Client"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "category": "public.app-category.business",
+      "artifactName": "Portail-Client.${ext}",
+      "identity": null
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Office",
+      "maintainer": "Portail client <noreply@users.noreply.github.com>",
+      "artifactName": "Portail-Client.${ext}",
+      "synopsis": "Suivi de projet, livrables et factures"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ck526438-lgtm",
+        "repo": "git-client-portal",
+        "releaseType": "release"
+      }
+    ]
+  }
+}

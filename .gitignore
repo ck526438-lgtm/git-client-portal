@@ -10,3 +10,11 @@ shots/
 npm-debug.log*
 .DS_Store
 *.tsbuildinfo
+
+# Applications natives (générées)
+apps/*/node_modules/
+apps/desktop/dist/
+apps/desktop/shell/
+apps/mobile/www/
+apps/mobile/android/
+apps/mobile/ios/

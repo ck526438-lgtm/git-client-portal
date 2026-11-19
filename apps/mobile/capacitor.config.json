@@ -1,0 +1,19 @@
+{
+  "appId": "com.portailclient.app",
+  "appName": "Portail Client",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor",
+    "allowNavigation": ["*"]
+  },
+  "android": {
+    "appendUserAgent": "PortailClientApp/android",
+    "allowMixedContent": false
+  },
+  "ios": {
+    "appendUserAgent": "PortailClientApp/ios",
+    "contentInset": "never",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}
