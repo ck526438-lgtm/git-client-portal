@@ -28,6 +28,9 @@ apps/
 git tag v1.1.0 && git push origin v1.1.0
 ```
 
+Sans terminal : onglet **Actions** → *Applications* → **Run workflow**, saisissez `v1.1.0`. Le tag est créé
+automatiquement.
+
 Le workflow `.github/workflows/apps.yml` construit les 5 systèmes en parallèle et publie une release GitHub avec :
 `Portail-Client-Setup.exe`, `Portail-Client.dmg`, `Portail-Client.AppImage`, `Portail-Client.deb`,
 `Portail-Client.apk`, `Portail-Client-iOS-non-signe.ipa`. La page `/application` du portail pointe directement sur
