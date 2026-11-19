@@ -137,12 +137,17 @@ Pour l'avoir sous la main, ouvrez la page **Application** : le portail s'install
 
 const envFile = path.join(root, '.env.local')
 let password = ''
+let adminPassword = ''
 if (!fs.existsSync(envFile) || (await confirm('Un fichier .env.local existe déjà. Le remplacer ?', false))) {
   password = crypto.randomBytes(9).toString('base64url')
+  adminPassword = crypto.randomBytes(12).toString('base64url')
   const secret = crypto.randomBytes(32).toString('hex')
   fs.writeFileSync(
     envFile,
-    `# Généré par « npm run init » — à recopier dans les variables d'environnement de l'hébergeur.\nPORTAL_PASSWORD=${password}\nPORTAL_SECRET=${secret}\nREDEPLOY_HOOK_URL=\n`,
+    `# Généré par « npm run init » — à recopier dans les variables d'environnement de l'hébergeur.\n` +
+      `PORTAL_PASSWORD=${password}\nPORTAL_SECRET=${secret}\nREDEPLOY_HOOK_URL=\n\n` +
+      `# Éditeur web (/admin) : votre mot de passe, ne le donnez pas au client.\nADMIN_PASSWORD=${adminPassword}\n` +
+      `# En production : dépôt et jeton GitHub (permission Contents : Read and write).\nGITHUB_REPO=\nGITHUB_TOKEN=\nGITHUB_BRANCH=main\n`,
   )
 }
 
@@ -152,10 +157,10 @@ console.log(`
   ✓ content/project.yaml et content/milestones.yaml écrits
   ✓ première nouvelle : ${path.relative(root, welcome)}${wipe ? '\n  ✓ contenu de démonstration retiré' : ''}${
     password ? `\n  ✓ .env.local créé — mot de passe à transmettre au client : ${password}` : ''
-  }
+  }${adminPassword ? `\n  ✓ mot de passe de l'éditeur (/admin), pour vous seul : ${adminPassword}` : ''}
 
   Ensuite :
-    npm run dev                       aperçu sur http://localhost:3000
+    npm run dev                       aperçu sur http://localhost:3000 — éditeur sur /admin
     git add -A && git commit -m "Portail ${client}" && git push
     puis déployez sur Vercel ou Netlify (boutons dans le README).
 `)

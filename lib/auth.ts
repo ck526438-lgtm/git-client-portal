@@ -56,3 +56,29 @@ export function publicUrl(request: Request, path: string): URL {
   const proto = request.headers.get('x-forwarded-proto')?.split(',')[0]?.trim() || (local ? 'http' : 'https')
   return new URL(`${proto}://${host}${path}`)
 }
+
+// ---------- Accès éditeur (/admin) ----------
+// Mot de passe distinct de celui du client : un client connecté au portail n'a
+// jamais accès à l'éditeur.
+
+export const ADMIN_COOKIE = 'portail_editeur'
+export const ADMIN_MAX_AGE = 60 * 60 * 12
+
+export function isAdminConfigured(): boolean {
+  const value = process.env.ADMIN_PASSWORD
+  return typeof value === 'string' && value.length >= 8 && value !== process.env.PORTAL_PASSWORD
+}
+
+export async function signAdmin(password: string): Promise<string> {
+  return sign(`editeur:${password}`)
+}
+
+export async function isValidAdminToken(token: string | undefined): Promise<boolean> {
+  if (!isAdminConfigured() || !token) return false
+  const expected = await signAdmin(process.env.ADMIN_PASSWORD as string)
+  return equals(token, expected)
+}
+
+export function adminCookieOptions() {
+  return { ...cookieOptions(), maxAge: ADMIN_MAX_AGE }
+}

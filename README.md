@@ -56,6 +56,29 @@ navigation à gauche (barre d'onglets en bas sur mobile), thème clair et sombre
 | --- | --- | --- |
 | <img src="docs/screenshots/activite.png" width="470" alt="Le journal du projet"> | <img src="docs/screenshots/livrables.png" width="470" alt="Les livrables"> | <img src="docs/screenshots/documents.png" width="470" alt="Les documents"> |
 
+## L'éditeur web : sans Git
+
+Vous n'aimez pas la ligne de commande ? Ouvrez **`/admin`** sur votre portail. Vous publiez des nouvelles, des
+livrables et des factures, et vous mettez à jour le planning avec des formulaires. Chaque enregistrement devient un
+commit sur votre dépôt, puis l'hébergeur reconstruit le portail en une minute. Il n'y a toujours **aucune base de
+données**, et tout l'historique reste dans Git.
+
+| Tableau de bord de l'éditeur | Créer une facture |
+| --- | --- |
+| <img src="docs/screenshots/editeur.png" width="470" alt="Tableau de bord de l'éditeur"> | <img src="docs/screenshots/editeur-facture.png" width="470" alt="Formulaire de facture"> |
+
+Pour l'activer, ajoutez trois variables chez votre hébergeur :
+
+| Variable | Valeur |
+| --- | --- |
+| `ADMIN_PASSWORD` | votre mot de passe (8 caractères minimum, **différent** de celui du client) |
+| `GITHUB_REPO` | `votre-compte/votre-depot` |
+| `GITHUB_TOKEN` | jeton *fine-grained* limité à ce dépôt, permission **Contents : Read and write** (GitHub → Settings → Developer settings → Personal access tokens) |
+
+Chaque fichier est vérifié avec les règles du build **avant** d'être enregistré : un formulaire mal rempli affiche
+l'erreur, mais ne casse jamais le portail. En local (`npm run dev`), sans jeton, l'éditeur écrit directement dans
+`content/`.
+
 ## Sur tous les appareils
 
 Votre client choisit comment il suit son projet :
@@ -308,7 +331,7 @@ configuration supplémentaire.
 
 ## Limitations assumées
 
-- **Le client ne peut pas écrire** : pas de commentaires, pas de case à cocher. Ses réponses passent par
+- **Le client ne peut pas écrire** (seule votre équipe a accès à l'éditeur `/admin`) : pas de commentaires, pas de case à cocher. Ses réponses passent par
   e-mail (boutons pré-remplis) ou par un issue GitHub si vous l'ouvrez.
 - **La mise à jour n'est pas instantanée** : elle prend le temps d'un build, 30 à 60 secondes.
 - **Un portail = un client.** Le multi-tenant supposerait une base de données, ce que le projet évite.
