@@ -1,7 +1,7 @@
 // Identifiant reconnu par les applications natives pour vérifier qu'une adresse
 // pointe bien vers un portail client (voir /api/health et apps/shell).
 export const APP_ID = 'portail-client'
-export const APP_VERSION = '1.1.0'
+export const APP_VERSION = '1.2.0'
 
 // Où le client télécharge les applications. Surchargeable par portail via
 // APP_DOWNLOAD_URL (ex. vos propres releases GitHub).

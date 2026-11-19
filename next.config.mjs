@@ -21,7 +21,10 @@ const nextConfig = {
               "frame-ancestors 'none'",
               "object-src 'none'",
               "img-src 'self' data: https:",
-              "script-src 'self' 'unsafe-inline'",
+              // React a besoin d'eval() uniquement en développement (outils de débogage).
+              process.env.NODE_ENV === 'development'
+                ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+                : "script-src 'self' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline'",
               "font-src 'self' data:",
               "connect-src 'self'",
