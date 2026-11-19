@@ -1,0 +1,32 @@
+name: Vérification du portail
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  portail:
+    name: Contenu, types et build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Validation du contenu et des types
+        run: npm run typecheck
+      - name: Build de production
+        run: npm run build
+        env:
+          PORTAL_PASSWORD: verification-ci
+          PORTAL_SECRET: verification-ci
+      - name: Syntaxe des applications natives
+        run: |
+          node --check apps/shell/app.js
+          node --check apps/desktop/main.js

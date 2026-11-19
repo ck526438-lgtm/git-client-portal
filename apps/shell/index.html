@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src http: https:; img-src 'self' data:; style-src 'self'; script-src 'self'">
+  <meta name="color-scheme" content="light dark">
+  <title>Portail Client</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="brand">
+      <img src="icon.svg" alt="" width="48" height="48">
+      <div>
+        <h1>Portail Client</h1>
+        <p>Le suivi de vos projets, réunis dans une seule application.</p>
+      </div>
+    </header>
+
+    <section id="liste-section" class="card" hidden>
+      <h2>Mes portails</h2>
+      <ul id="liste" class="list"></ul>
+    </section>
+
+    <section class="card">
+      <h2 id="ajout-titre">Ajouter un portail</h2>
+      <p class="hint">Collez l’adresse que votre prestataire vous a envoyée (elle figure aussi sur la page « Application » du portail).</p>
+      <form id="ajout" novalidate>
+        <label for="adresse">Adresse du portail</label>
+        <input id="adresse" name="adresse" type="url" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="https://portail.mon-studio.fr" required>
+        <p id="erreur" class="error" role="alert" hidden></p>
+        <button id="valider" type="submit">Ouvrir le portail</button>
+      </form>
+    </section>
+
+    <footer class="foot">
+      Votre mot de passe se saisit sur le portail lui-même : l’application ne le stocke jamais.
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

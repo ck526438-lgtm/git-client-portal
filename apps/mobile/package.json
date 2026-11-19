@@ -1,0 +1,27 @@
+{
+  "name": "portail-client-mobile",
+  "version": "1.1.0",
+  "description": "Application Android et iOS du Portail client (Capacitor).",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "prepare-shell": "node scripts/prepare.mjs",
+    "android:init": "npm run prepare-shell && npx cap add android && npx capacitor-assets generate --android && node scripts/android-version.mjs",
+    "ios:init": "npm run prepare-shell && npx cap add ios && npx capacitor-assets generate --ios",
+    "sync": "npm run prepare-shell && npx cap sync",
+    "android": "npm run sync && npx cap open android",
+    "ios": "npm run sync && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/ios": "^8.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@capacitor/cli": "^8.6.2"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Icon } from '@/components/icons'
 import MilestoneRail from '@/components/milestone-rail'
 import { Bar, Empty, Panel, Pill, Stat } from '@/components/ui'
 import { getContent } from '@/lib/content'
@@ -31,48 +32,101 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <section className="hero">
-        <div>
-          <p className="eyebrow">
+      <section className="scene">
+        {project.cover ? <img className="scene-cover" src={project.cover} alt="" /> : null}
+        <div className="scene-sky" aria-hidden="true" />
+
+        <div className="scene-head">
+          <p className="eyebrow scene-eyebrow">
             {project.client}
             {project.reference ? ` · ${project.reference}` : ''}
           </p>
-          <h1>{project.title}</h1>
-          {project.summary ? <p className="hero-summary">{project.summary}</p> : null}
+          <h1 className="scene-title">{project.title}</h1>
+          {project.summary ? <p className="scene-summary">{project.summary}</p> : null}
           <div className="chips">
             <Pill tone={project.status === 'done' ? 'ok' : project.status === 'paused' ? 'warn' : 'info'}>
               {projectStatusLabel[project.status]}
             </Pill>
             {project.started_on ? <span className="pill" data-tone="neutral">Démarré le {frDate(project.started_on)}</span> : null}
-            {project.target_on ? <span className="pill" data-tone="neutral">Objectif {frDate(project.target_on)}</span> : null}
-            {project.contact ? <span className="pill" data-tone="neutral">Contact client : {project.contact}</span> : null}
+            {project.contact ? <span className="pill" data-tone="neutral">Contact : {project.contact}</span> : null}
           </div>
         </div>
 
-        <div className="card card-pad">
-          <div className="panel-title">
+        <div className="scene-cards">
+          <div className="glass-card progress-card">
             <h2>Avancement global</h2>
-            <span className="panel-note">
-              {stats.milestones_done}/{stats.milestones_total} étapes
-            </span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14, marginBottom: 12 }}>
-            <span style={{ fontSize: 42, fontWeight: 660, letterSpacing: '-0.04em', lineHeight: 1 }}>{stats.overall}%</span>
-            <span className="mono-note">{stats.next_milestone ? `prochaine échéance : ${stats.next_milestone.title}` : 'fin de projet'}</span>
-          </div>
-          <Bar value={stats.overall} tone={stats.overall >= 100 ? 'ok' : 'accent'} />
-          {stats.next_milestone?.due ? (
-            <p className="stop-when" style={{ marginLeft: 0, marginTop: 10 }}>
-              {stats.next_milestone.title} attendu le {frDate(stats.next_milestone.due)}
+            <p className="glass-text">
+              {stats.milestones_done} étape{stats.milestones_done > 1 ? 's' : ''} terminée{stats.milestones_done > 1 ? 's' : ''} sur{' '}
+              {stats.milestones_total}. Chaque publication de l’équipe met cette page à jour.
             </p>
-          ) : null}
-          {project.email ? (
-            <p style={{ marginTop: 16, marginBottom: 0 }}>
-              <a className="btn" href={mailtoLink(project.email, `Question sur le dossier ${project.reference || project.title}`)}>
-                Poser une question
+            <div className="big-row">
+              <span className="big-number">
+                {stats.overall}
+                <small>%</small>
+              </span>
+              <span className="face-stack" aria-hidden="true">
+                {project.team.slice(0, 3).map((member) => (
+                  <span className="face" key={member.name}>
+                    {member.name.split(/\s+/).map((part) => part.slice(0, 1)).join('').slice(0, 2).toUpperCase()}
+                  </span>
+                ))}
+              </span>
+              <a className="round-btn" href="#chemin" aria-label="Voir les étapes du projet">
+                <Icon name="arrow" />
               </a>
+            </div>
+            <Bar value={stats.overall} tone={stats.overall >= 100 ? 'ok' : 'accent'} />
+          </div>
+
+          <span className="scene-badge" aria-hidden="true">
+            {project.studio.slice(0, 1)}
+          </span>
+
+          <div className="glass-card next-card">
+            <div className="next-head">
+              <div>
+                <h2>{stats.next_milestone ? stats.next_milestone.title : 'Projet terminé'}</h2>
+                <p className="next-when">
+                  <Icon name="calendar" size={14} />
+                  {stats.next_milestone?.due ? `Attendu le ${frDate(stats.next_milestone.due)}` : 'Toutes les étapes sont livrées'}
+                </p>
+              </div>
+              <Link className="round-btn light" href={stats.next_milestone ? '#chemin' : '/livrables'} aria-label="Ouvrir le détail">
+                <Icon name="arrow" />
+              </Link>
+            </div>
+            <p className="glass-text">
+              {stats.next_milestone?.summary || 'Retrouvez ici la prochaine étape du planning et ce qu’elle demande de votre côté.'}
             </p>
-          ) : null}
+            <div className="next-facts">
+              <span>
+                <Icon name="layers" size={14} /> {stats.approved}/{stats.deliverables_total} livrables validés
+              </span>
+              <span>
+                <Icon name="activity" size={14} /> {stats.awaiting_review} avis attendu{stats.awaiting_review > 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="next-actions">
+              {project.email ? (
+                <a
+                  className="action-chip"
+                  href={mailtoLink(project.email, `Question sur le dossier ${project.reference || project.title}`)}
+                  aria-label="Poser une question"
+                >
+                  <Icon name="mail" size={17} />
+                  <span>Question</span>
+                </a>
+              ) : null}
+              <Link className="action-chip" href="/livrables">
+                <Icon name="layers" size={17} />
+                <span>Livrables</span>
+              </Link>
+              <Link className="action-chip" href="/factures">
+                <Icon name="receipt" size={17} />
+                <span>Factures</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -143,7 +197,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid-2">
-        <Panel title="Le chemin pris" note="étapes et échéances">
+        <Panel title="Le chemin pris" note="étapes et échéances" id="chemin">
           <MilestoneRail items={content.milestones} />
         </Panel>
 

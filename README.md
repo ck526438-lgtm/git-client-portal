@@ -9,8 +9,14 @@ données, pas d'abonnement.
   <img src="https://img.shields.io/badge/Next.js-16-000000?style=flat-square&logo=nextdotjs&logoColor=white" alt="Next.js 16">
   <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript strict">
   <img src="https://img.shields.io/badge/base%20de%20donn%C3%A9es-0-16a34a?style=flat-square" alt="Zéro base de données">
-  <img src="https://img.shields.io/badge/d%C3%A9pendances-5-E8912D?style=flat-square" alt="Cinq dépendances runtime">
+  <img src="https://img.shields.io/badge/d%C3%A9pendances-6-E8912D?style=flat-square" alt="Six dépendances runtime">
   <img src="https://img.shields.io/badge/licence-MIT-6b7280?style=flat-square" alt="Licence MIT">
+  <img src="https://img.shields.io/badge/apps-Windows%20%C2%B7%20macOS%20%C2%B7%20Linux%20%C2%B7%20Android%20%C2%B7%20iOS-1f1b4d?style=flat-square" alt="Applications pour tous les systèmes">
+</p>
+
+<p align="center">
+  <a href="https://github.com/ck526438-lgtm/git-client-portal/releases/latest"><strong>Télécharger l'application</strong></a>
+  · Windows · macOS · Linux · Android · iOS (via Safari)
 </p>
 
 <p align="center">
@@ -37,6 +43,9 @@ données, pas d'abonnement.
 
 ## Les écrans
 
+Design « verre & ciel » : cadre aux grands arrondis, surfaces en verre dépoli, boutons ronds flottants, rail de
+navigation à gauche (barre d'onglets en bas sur mobile), thème clair et sombre.
+
 ![Tableau de bord du portail](docs/screenshots/dashboard.png)
 
 | Vue mobile | Facture imprimable | Thème sombre |
@@ -46,6 +55,26 @@ données, pas d'abonnement.
 | Journal d'activité | Livrables en attente d'avis | Mode d'emploi du projet |
 | --- | --- | --- |
 | <img src="docs/screenshots/activite.png" width="470" alt="Le journal du projet"> | <img src="docs/screenshots/livrables.png" width="470" alt="Les livrables"> | <img src="docs/screenshots/documents.png" width="470" alt="Les documents"> |
+
+## Sur tous les appareils
+
+Votre client choisit comment il suit son projet :
+
+| Façon | Pour qui | Comment |
+| --- | --- | --- |
+| **Navigateur** | tout le monde | il ouvre l'adresse du portail et entre le mot de passe |
+| **Appli installée depuis le navigateur** (PWA) | iPhone, iPad, Android, Chrome/Edge | bouton ⬇ en haut du portail, ou page `/application` |
+| **Application à télécharger** | Windows, macOS, Linux, Android | [releases](https://github.com/ck526438-lgtm/git-client-portal/releases/latest), puis il colle l'adresse du portail |
+
+L'application « Portail Client » est **la même pour tous vos clients** : chacun y ajoute l'adresse de son portail
+(il peut en suivre plusieurs, même de prestataires différents). Elle vérifie l'adresse via `/api/health`, garde la
+session ouverte et rouvre automatiquement le dernier portail consulté. Les pages déjà vues restent lisibles hors ligne.
+
+| Page « Application » du portail | Écran d'accueil des applications |
+| --- | --- |
+| <img src="docs/screenshots/application.png" width="470" alt="Page Application du portail"> | <img src="docs/screenshots/app-accueil.png" width="470" alt="Écran Mes portails de l'application"> |
+
+Détails techniques, signature Android/iOS et publication : [`apps/README.md`](apps/README.md).
 
 ## Pourquoi ce projet existe
 
@@ -83,6 +112,14 @@ Utilisez ce dépôt comme modèle (**Use this template** → *Create a new repos
 git clone https://github.com/VOTRE-COMPTE/portail-maison-lumen.git
 cd portail-maison-lumen
 npm install
+npm run init     # assistant : studio, client, projet, dates, mot de passe
+```
+
+L'assistant écrit `content/project.yaml` et `content/milestones.yaml`, retire le contenu de démonstration, publie
+une nouvelle de bienvenue et génère `.env.local` avec un mot de passe et une clé. **Vous pouvez passer directement à
+l'étape 3.** Pour tout faire à la main à la place :
+
+```bash
 cp .env.example .env.local
 ```
 
@@ -102,6 +139,7 @@ branding:
   studio: "Atelier Vantage"
   tagline: "Portail de suivi de votre projet"
   accent: "#4f46e5"
+  cover: "https://exemple.com/visuel.jpg"   # facultatif : image de fond de l'accueil
 
 project:
   title: "Refonte de la boutique en ligne"
@@ -251,8 +289,8 @@ configuration supplémentaire.
 - **Cookie signé HMAC-SHA256** (`httpOnly`, `SameSite=Lax`, `Secure` en production, 30 jours). Le cookie
   ne contient aucune donnée lisible, seulement une signature.
 - **Anti-énumération** : 8 tentatives par IP sur 15 minutes, avec latence ajoutée sur les échecs.
-- **Le proxy verrouille toute route** qui n'est pas explicitement publique ; seul `/api/health` est ouvert
-  et il ne renvoie que des compteurs.
+- **Le proxy verrouille toute route** qui n'est pas explicitement publique ; seuls `/api/health` (qui ne
+  renvoie aucune donnée du projet avant connexion), le manifeste, les icônes et le service worker sont ouverts.
 - **En-têtes** : CSP restrictive, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy: same-origin`,
   `robots.txt` qui interdit l'indexation.
 - **Markdown assaini** : le HTML brut est échappé et les liens `javascript:` sont neutralisés. Cela
@@ -278,7 +316,10 @@ configuration supplémentaire.
 ## Technique
 
 Next.js 16 (App Router, React 19), TypeScript strict, une feuille de CSS écrite à la main, `marked` pour le
-Markdown et `js-yaml` pour le YAML. C'est tout.
+Markdown, `js-yaml` pour le YAML et la police Outfit servie localement. C'est tout.
+
+Applications natives : Electron (Windows, macOS, Linux) et Capacitor (Android, iOS), construites par GitHub Actions
+à chaque tag `v*` — voir [`apps/README.md`](apps/README.md).
 
 Le contenu est lu depuis le disque au développement, puis sérialisé dans `generated/content.json` au build
 (`npm run build`), donc les pages sont prérendues en HTML statique et servies par le CDN. Les routes

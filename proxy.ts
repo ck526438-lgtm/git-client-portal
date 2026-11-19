@@ -1,12 +1,22 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { SESSION_COOKIE, isValidToken } from './lib/auth'
 
-const OPEN_PATHS = ['/login', '/api/login', '/api/health', '/robots.txt']
+const OPEN_PATHS = [
+  '/login',
+  '/api/login',
+  '/api/health',
+  '/robots.txt',
+  // Fichiers nécessaires pour installer le portail en application avant connexion.
+  '/manifest.webmanifest',
+  '/sw.js',
+  '/hors-ligne.html',
+]
+const OPEN_PREFIXES = ['/icons/']
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  if (OPEN_PATHS.includes(pathname)) {
+  if (OPEN_PATHS.includes(pathname) || OPEN_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
     return NextResponse.next()
   }
 

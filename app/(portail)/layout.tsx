@@ -3,6 +3,7 @@ import PortalHeader from '@/components/portal-header'
 import TimeAgo from '@/components/time-ago'
 import { getContent } from '@/lib/content'
 import { frDate } from '@/lib/format'
+import { mailtoLink } from '@/lib/mailto'
 
 export default async function PortalLayout({ children }: { children: ReactNode }) {
   const content = await getContent()
@@ -10,11 +11,15 @@ export default async function PortalLayout({ children }: { children: ReactNode }
   const last = content.stats.last_update
 
   return (
-    <div style={{ '--accent': project.accent } as CSSProperties}>
+    <div className="app-frame" style={{ '--accent': project.accent } as CSSProperties}>
       <PortalHeader
         studio={project.studio}
         tagline={project.tagline || project.title}
         projectTitle={project.title}
+        client={project.client}
+        reference={project.reference}
+        target={project.target_on ? frDate(project.target_on) : ''}
+        contactHref={project.email ? mailtoLink(project.email, `Question sur le dossier ${project.reference || project.title}`) : ''}
         canSync={Boolean(process.env.REDEPLOY_HOOK_URL)}
       />
       <main id="contenu" className="shell">

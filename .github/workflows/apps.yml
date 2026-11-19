@@ -1,0 +1,162 @@
+name: Applications (Windows, macOS, Linux, Android, iOS)
+
+# - Sur une pull request ou à la main : construit toutes les applications et les
+#   dépose en « artifacts » du run (onglet Actions) pour les tester.
+# - Sur un tag vX.Y.Z : publie en plus une release GitHub avec les fichiers
+#   que la page /application du portail propose au téléchargement.
+
+on:
+  push:
+    tags: ['v*']
+  pull_request:
+    paths: ['apps/**', '.github/workflows/apps.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop:
+    name: Bureau (${{ matrix.name }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, name: Windows, cmd: 'dist:win', files: 'apps/desktop/dist/*.exe' }
+          - { os: macos-latest, name: macOS, cmd: 'dist:mac', files: 'apps/desktop/dist/*.dmg' }
+          - { os: ubuntu-latest, name: Linux, cmd: 'dist:linux', files: "apps/desktop/dist/*.AppImage\napps/desktop/dist/*.deb" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: apps/desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - run: npm ci
+      - run: npm run ${{ matrix.cmd }}
+        env:
+          # Pas de certificat de signature : electron-builder ne cherche pas d'identité.
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bureau-${{ matrix.name }}
+          path: ${{ matrix.files }}
+          if-no-files-found: error
+
+  android:
+    name: Android (APK)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - name: Génération du projet Android
+        run: npm run android:init && npx cap sync android
+      - name: Compilation de l'APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          cd android
+          chmod +x gradlew
+          mkdir -p ../dist
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            # APK de production signé avec votre clé (secrets du dépôt).
+            ./gradlew assembleRelease --no-daemon
+            echo "$KEYSTORE_BASE64" | base64 -d > release.jks
+            BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
+            "$BT/zipalign" -f 4 app/build/outputs/apk/release/app-release-unsigned.apk aligned.apk
+            "$BT/apksigner" sign --ks release.jks --ks-pass env:KEYSTORE_PASSWORD \
+              --ks-key-alias "$KEY_ALIAS" --key-pass env:KEY_PASSWORD \
+              --out ../dist/Portail-Client.apk aligned.apk
+            rm -f release.jks aligned.apk
+          else
+            # Sans clé : APK installable signé avec une clé de développement.
+            ./gradlew assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk ../dist/Portail-Client.apk
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: apps/mobile/dist/Portail-Client.apk
+          if-no-files-found: error
+
+  ios:
+    name: iOS (projet Xcode + IPA non signée)
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm ci
+      - name: Génération du projet iOS
+        run: npm run ios:init && npx cap sync ios
+      - name: Compilation (sans signature)
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build
+          mkdir -p dist/Payload
+          cp -R build/Build/Products/Release-iphoneos/App.app dist/Payload/
+          (cd dist && zip -qr Portail-Client-iOS-non-signe.ipa Payload && rm -rf Payload)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios
+          path: apps/mobile/dist/Portail-Client-iOS-non-signe.ipa
+          if-no-files-found: error
+
+  release:
+    name: Publication de la release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [desktop, android, ios]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: fichiers
+          merge-multiple: true
+      - run: ls -la fichiers
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Portail Client ${{ github.ref_name }}
+          generate_release_notes: true
+          files: fichiers/*
+          body: |
+            ## Installer l'application
+
+            | Système | Fichier |
+            | --- | --- |
+            | Windows 10/11 | `Portail-Client-Setup.exe` |
+            | macOS (Intel + Apple Silicon) | `Portail-Client.dmg` — au premier lancement : clic droit → Ouvrir |
+            | Linux | `Portail-Client.AppImage` ou `Portail-Client.deb` |
+            | Android 7+ | `Portail-Client.apk` — autorisez l'installation depuis le navigateur |
+            | iPhone / iPad | Ouvrez le portail dans Safari → Partager → Sur l'écran d'accueil |
+            | iOS (avancé) | `Portail-Client-iOS-non-signe.ipa` — à signer avec votre compte Apple (Sideloadly, AltStore, Xcode) |
+
+            Au premier lancement, collez l'adresse de votre portail puis saisissez votre mot de passe.

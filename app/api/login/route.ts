@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { SESSION_COOKIE, cookieOptions, isConfigured, publicUrl, sign } from '@/lib/auth'
+import { SESSION_COOKIE, cookieOptions, isConfigured, isValidToken, publicUrl, sign } from '@/lib/auth'
 
 const WINDOW_MS = 15 * 60 * 1000
 const MAX_ATTEMPTS = 8
@@ -9,6 +9,10 @@ export const dynamic = 'force-dynamic'
 
 function tooManyAttempts(key: string): boolean {
   const now = Date.now()
+  // Évite que la table grossisse sans fin sur un serveur qui tourne longtemps.
+  if (attempts.size > 5000) {
+    for (const [ip, entry] of attempts) if (entry.until < now) attempts.delete(ip)
+  }
   const record = attempts.get(key)
   if (!record || record.until < now) {
     attempts.set(key, { count: 1, until: now + WINDOW_MS })
@@ -45,7 +49,9 @@ export async function POST(request: NextRequest) {
     return fail(request, 'trop_essais', retour)
   }
 
-  if (provided !== process.env.PORTAL_PASSWORD) {
+  // Comparaison des signatures (longueur fixe) plutôt que des mots de passe en clair :
+  // le temps de réponse ne révèle rien sur le mot de passe attendu.
+  if (!(await isValidToken(await sign(provided)))) {
     await new Promise((resolve) => setTimeout(resolve, 400))
     return fail(request, 'motdepasse', retour)
   }
